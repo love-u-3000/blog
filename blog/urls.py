@@ -20,5 +20,5 @@ app_name = 'myblog'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('myblog/', include('myblog.urls')),
+    path('', include('myblog.urls')),
 ]
