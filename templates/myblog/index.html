@@ -9,12 +9,12 @@
 	<h1 class="jumbotron text-center" style="font-family: Lobster;">Welcome to Blogs!!</h1>
 	{% if not user.is_authenticated %}
 		<div class="row">
-			<div class="col-sm-6 text-center">
+			<div id="login" class="col-sm-6 text-center">
 				<h3>Have an account Login Here</h3>
 				<br>
 				<a class="btn btn-primary" href="{% url 'myblog:login' %}">Login</a>
 			</div>
-			<div class="col-sm-6 text-center">
+			<div id="signup" class="col-sm-6 text-center">
 				<h3>New User Signup Here</h3>
 				<br>
 				<a class="btn btn-primary" href="{% url 'myblog:register' %}">Signup</a>
