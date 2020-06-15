@@ -99,10 +99,5 @@ a.socialIcon:hover, .socialHoverClass {
 @media (max-width: 575px) {
 	#login {
 		margin-bottom: 50px;
-		border: 1px solid grey;
-	}
-
-	#signup {
-		border: 1px solid grey;
 	}
 }
