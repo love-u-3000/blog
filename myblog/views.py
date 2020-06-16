@@ -19,10 +19,14 @@ def index(request):
 def register(request):
 	if request.method == 'POST':
 		user_form = UserForm(request.POST)
+		username = request.POST.get('username')
+		password = request.POST.get('password')
+		print("Username is " + username)
+		print("Password is " + password)
 		if user_form.is_valid():
 			user = user_form.save(commit = True)
-			print("Username is" + user.username)
-			print("Password is" + password)
+			print("Username is " + user.username)
+			print("Password is " + user.password)
 			user.set_password(user.password)
 			user.save()
 			return HttpResponseRedirect(reverse('myblog:login'))
@@ -39,8 +43,8 @@ def user_login(request):
 		user = authenticate(username = username, password = password)
 		if user:
 			if user.is_active:
-				print("Username is" + username)
-				print("Password is" + password)
+				print("Username is " + username)
+				print("Password is " + password)
 				login(request, user)
 				global posts
 				posts = Post.objects.filter(author = user).order_by('-published_date')
