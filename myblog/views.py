@@ -21,6 +21,7 @@ def index(request):
 		context_dict = {'posts': posts, 'prompt': True}
 	else:
 		context_dict = {'posts': posts, 'prompt': False}
+	previousRequest = "index"
 	return render(request, 'myblog/index.html', context_dict)
 
 def register(request):
