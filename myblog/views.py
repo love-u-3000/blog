@@ -8,7 +8,7 @@ from myblog.forms import PostForm, UserForm
 from django.utils import timezone
 
 posts = None
-prompt = False
+previousRequest = None
 
 def index(request):
 	global posts
@@ -16,11 +16,14 @@ def index(request):
 		posts = Post.objects.all().order_by('-published_date')
 	else:
 		posts = None
-	global prompt
-	context_dict = {'posts': posts, 'prompt': prompt}
+	if previousRequest == "editpost":
+		context_dict = {'posts': posts, 'prompt': True}
+	else:
+		context_dict = {'posts': posts, 'prompt': False}
 	return render(request, 'myblog/index.html', context_dict)
 
 def register(request):
+	previousRequest = "register"
 	if request.method == 'POST':
 		user_form = UserForm(request.POST)
 		username = request.POST.get('username')
@@ -41,6 +44,7 @@ def register(request):
 
 
 def user_login(request):
+	previousRequest = "user_login"
 	if request.method == 'POST':
 		username = request.POST.get('username')
 		password = request.POST.get('password')
@@ -61,6 +65,7 @@ def user_login(request):
 		return render(request, 'myblog/login.html', {})
 		
 def user_logout(request):
+	previousRequest = "user_logout"
 	logout(request)
 	global posts
 	posts = None
@@ -68,6 +73,7 @@ def user_logout(request):
 	return HttpResponseRedirect(reverse('myblog:index'))
 
 def addpost(request):
+	previousRequest = "addpost"
 	if request.method == 'POST':
 		post_form = PostForm(request.POST)
 		if post_form.is_valid():
@@ -85,10 +91,9 @@ def addpost(request):
 		return render(request, 'myblog/addpost.html', context_dict)
 
 def editpost(request, pk):
+	previousRequest = "editpost"
 	post = get_object_or_404(Post, pk = pk)
-	global prompt
 	if post.author != request.user:
-		prompt = True
 		return HttpResponseRedirect(reverse('myblog:index'))
 	prompt = False
 	if request.method == 'POST':
