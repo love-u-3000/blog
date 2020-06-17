@@ -97,10 +97,10 @@ def addpost(request):
 		return render(request, 'myblog/addpost.html', context_dict)
 
 def editpost(request, pk):
-	global previousRequest
-	previousRequest = "editpost"
 	post = get_object_or_404(Post, pk = pk)
+	global previousRequest
 	if post.author != request.user:
+		previousRequest = "editpost"
 		return HttpResponseRedirect(reverse('myblog:index'))
 	if request.method == 'POST':
 		post_form = PostForm(request.POST, instance = post)
