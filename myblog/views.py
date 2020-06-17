@@ -8,6 +8,7 @@ from myblog.forms import PostForm, UserForm
 from django.utils import timezone
 
 posts = None
+prompt = False
 
 def index(request):
 	global posts
@@ -15,7 +16,8 @@ def index(request):
 		posts = Post.objects.all().order_by('-published_date')
 	else:
 		posts = None
-	context_dict = {'posts': posts}
+	global prompt
+	context_dict = {'posts': posts, 'prompt': prompt}
 	return render(request, 'myblog/index.html', context_dict)
 
 def register(request):
@@ -48,6 +50,8 @@ def user_login(request):
 				print("Username is " + username)
 				print("Password is " + password)
 				login(request, user)
+				global prompt
+				prompt = False
 				return HttpResponseRedirect(reverse('myblog:index'))
 			else:
 				return HttpResponse("Your account is disabled")
@@ -60,6 +64,7 @@ def user_logout(request):
 	logout(request)
 	global posts
 	posts = None
+	prompt = False
 	return HttpResponseRedirect(reverse('myblog:index'))
 
 def addpost(request):
@@ -81,6 +86,11 @@ def addpost(request):
 
 def editpost(request, pk):
 	post = get_object_or_404(Post, pk = pk)
+	global prompt
+	if post.author != request.user:
+		prompt = True
+		return HttpResponseRedirect(reverse('myblog:index'))
+	prompt = False
 	if request.method == 'POST':
 		post_form = PostForm(request.POST, instance = post)
 		if post_form.is_valid():
