@@ -27,7 +27,9 @@
 				<div>
 					<h3 style="font-family: Lobster; font-style: italic;">
 						<a href="{% url 'myblog:editpost' post.pk %}">{{post.title}}</a>
-						<i class='fas fa-pen'></i>
+						<span class="float-right">
+							<a href="{% url 'myblog:editpost' post.pk %}"><i class='fa fa-pencil'></i></a>
+						</span>
 					</h3>
 					<p style="font-size: 0.9em; color: grey;">
 						published: {{post.published_date}} 
