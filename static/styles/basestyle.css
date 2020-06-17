@@ -101,3 +101,8 @@ a.socialIcon:hover, .socialHoverClass {
 		margin-bottom: 50px;
 	}
 }
+
+#pencil {
+	color: black;
+	font-size: 0.9em;
+}
