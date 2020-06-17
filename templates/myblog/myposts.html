@@ -1,0 +1,36 @@
+{% extends 'myblog/base.html' %}
+{% load static %}
+
+{% block title_block %}
+	My Posts
+{% endblock %}
+
+{% block body_block %}
+	
+	{% if myposts %}
+		<h2 class="text-center">
+			My Posts
+		</h2>
+		{% for post in myposts %}
+			<div>
+				<h3 style="font-family: Lobster; font-style: italic;">
+					<a href="{% url 'myblog:editpost' post.pk %}">{{post.title}}</a>
+					<span class="float-right">
+						<a id="pencil" href="{% url 'myblog:editpost' post.pk %}"><i class='fa fa-pencil'></i></a>
+					</span>
+				</h3>
+				<p style="font-size: 0.9em; color: grey;">
+					published: {{post.published_date}} 
+				</p>
+				<p style="font-family: Lobster;">{{post.text}}</p>
+			</div>
+			<hr>
+		{% endfor %}
+	{% else %}
+		<h3 class="text-center">You have not created any Posts yet</h3><br>
+		<div class="text-center">
+			<a class="btn btn-primary" href="{% url 'myblog:addpost' %}">Create a New Post</a>
+		</div>
+	{% endif %}
+
+{% endblock %}

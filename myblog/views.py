@@ -118,3 +118,7 @@ def editpost(request, pk):
 		context_dict = {'post_form': post_form, 'pk': pk}
 		return render(request, 'myblog/editpost.html', context_dict)
 
+def myPosts(request):
+	myposts = Post.objects.filter(author = request.user).order_by('-published_date')
+	context_dict = {'myposts': myposts}
+	return render(request, 'myblog/myposts.html', context_dict)
