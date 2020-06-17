@@ -12,6 +12,7 @@ previousRequest = None
 
 def index(request):
 	global posts
+	global previousRequest
 	if request.user.is_active:
 		posts = Post.objects.all().order_by('-published_date')
 	else:
@@ -23,6 +24,7 @@ def index(request):
 	return render(request, 'myblog/index.html', context_dict)
 
 def register(request):
+	global previousRequest
 	previousRequest = "register"
 	if request.method == 'POST':
 		user_form = UserForm(request.POST)
@@ -44,6 +46,7 @@ def register(request):
 
 
 def user_login(request):
+	global previousRequest
 	previousRequest = "user_login"
 	if request.method == 'POST':
 		username = request.POST.get('username')
@@ -65,6 +68,7 @@ def user_login(request):
 		return render(request, 'myblog/login.html', {})
 		
 def user_logout(request):
+	global previousRequest
 	previousRequest = "user_logout"
 	logout(request)
 	global posts
@@ -73,6 +77,7 @@ def user_logout(request):
 	return HttpResponseRedirect(reverse('myblog:index'))
 
 def addpost(request):
+	global previousRequest
 	previousRequest = "addpost"
 	if request.method == 'POST':
 		post_form = PostForm(request.POST)
@@ -91,11 +96,11 @@ def addpost(request):
 		return render(request, 'myblog/addpost.html', context_dict)
 
 def editpost(request, pk):
+	global previousRequest
 	previousRequest = "editpost"
 	post = get_object_or_404(Post, pk = pk)
 	if post.author != request.user:
 		return HttpResponseRedirect(reverse('myblog:index'))
-	prompt = False
 	if request.method == 'POST':
 		post_form = PostForm(request.POST, instance = post)
 		if post_form.is_valid():
