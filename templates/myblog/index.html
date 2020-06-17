@@ -23,6 +23,9 @@
 		</div>
 	{% else %}
 		{% if posts %}
+			<h2 class="text-center">
+				Most recent Posts
+			</h2>
 			{% for post in posts %}
 				<div>
 					<h3 style="font-family: Lobster; font-style: italic;">
@@ -42,7 +45,7 @@
 				<hr>
 			{% endfor %}
 		{% else %}
-			<h3 class="text-center">You have not created any blogs yet</h3><br>
+			<h3 class="text-center">There are no Posts yet</h3><br>
 			<div class="text-center">
 				<a class="btn btn-primary" href="{% url 'myblog:addpost' %}">Create a Post</a>
 			</div>

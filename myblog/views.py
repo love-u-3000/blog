@@ -14,7 +14,7 @@ def index(request):
 	global posts
 	global previousRequest
 	if request.user.is_active:
-		posts = Post.objects.all().order_by('-published_date')
+		posts = Post.objects.all().order_by('-published_date')[:10]
 	else:
 		posts = None
 	if previousRequest == "editpost":
