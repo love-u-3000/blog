@@ -7,11 +7,10 @@ from myblog.models import Post
 from myblog.forms import PostForm, UserForm
 from django.utils import timezone
 
-posts = None
 previousRequest = None
 
 def index(request):
-	global posts
+
 	global previousRequest
 	if request.user.is_active:
 		posts = Post.objects.all().order_by('-published_date')[:10]
@@ -72,9 +71,6 @@ def user_logout(request):
 	global previousRequest
 	previousRequest = "user_logout"
 	logout(request)
-	global posts
-	posts = None
-	prompt = False
 	return HttpResponseRedirect(reverse('myblog:index'))
 
 def addpost(request):
@@ -122,3 +118,8 @@ def myPosts(request):
 	myposts = Post.objects.filter(author = request.user).order_by('-published_date')
 	context_dict = {'myposts': myposts}
 	return render(request, 'myblog/myposts.html', context_dict)
+
+def allPosts(request):
+	allposts = Post.objects.all().order_by('-published_date')
+	context_dict = {'allposts': allposts}
+	return render(request, 'myblog/allposts.html', context_dict)

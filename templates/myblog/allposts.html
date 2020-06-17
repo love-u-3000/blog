@@ -1,0 +1,36 @@
+{% extends 'myblog/base.html' %}
+{% load static %}
+
+{% block title_block %}
+	All Posts
+{% endblock %}
+
+{% block body_block %}
+	
+	{% if myposts %}
+		<h2 class="text-center">
+			All Posts
+		</h2><br><br>
+		{% for post in allposts %}
+			<div>
+				<h3 style="font-family: Lobster; font-style: italic;">
+					<a href="{% url 'myblog:editpost' post.pk %}">{{post.title}}</a>
+					<span class="float-right">
+						<a id="pencil" href="{% url 'myblog:editpost' post.pk %}"><i class='fa fa-pencil'></i></a>
+					</span>
+				</h3>
+				<p style="font-size: 0.9em; color: grey;">
+					published: {{post.published_date}} 
+					<span class="float-right">
+						author: <strong>{{post.author}}</strong>
+					</span>
+				</p>
+				<p style="font-family: Lobster;">{{post.text}}</p>
+			</div>
+			<hr>
+		{% endfor %}
+	{% else %}
+		<h3 class="text-center">There are no Posts yet</h3><br>
+	{% endif %}
+
+{% endblock %}
