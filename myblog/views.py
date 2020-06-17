@@ -12,7 +12,7 @@ posts = None
 def index(request):
 	global posts
 	if request.user.is_active:
-		posts = Post.objects.filter(author = request.user).order_by('-published_date')
+		posts = Post.objects.all().order_by('-published_date')
 	context_dict = {'posts': posts}
 	return render(request, 'myblog/index.html', context_dict)
 
@@ -47,7 +47,7 @@ def user_login(request):
 				print("Password is " + password)
 				login(request, user)
 				global posts
-				posts = Post.objects.filter(author = user).order_by('-published_date')
+				posts = Post.objects.filter.all().order_by('-published_date')
 				return HttpResponseRedirect(reverse('myblog:index'))
 			else:
 				return HttpResponse("Your account is disabled")
@@ -71,7 +71,7 @@ def addpost(request):
 			post.author = request.user
 			post.save()
 			global posts
-			posts = Post.objects.filter(author = request.user).order_by('-published_date')
+			posts = Post.objects.all().order_by('-published_date')
 			return HttpResponseRedirect(reverse('myblog:index'))
 		else:
 			context_dict = {'post_form': post_form}
@@ -91,7 +91,7 @@ def editpost(request, pk):
 			post.author = request.user
 			post.save()
 			global posts
-			posts = Post.objects.filter(author = request.user).order_by('-published_date')
+			posts = Post.objects.all().order_by('-published_date')
 			return HttpResponseRedirect(reverse('myblog:index'))
 		else:
 			context_dict = {'post_form': post_form}
