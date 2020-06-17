@@ -28,9 +28,9 @@
 		{% endfor %}
 	{% else %}
 		<h3 class="text-center">You have not created any Posts yet</h3><br>
-		<div class="text-center">
-			<a class="btn btn-primary" href="{% url 'myblog:addpost' %}">Create a New Post</a>
-		</div>
 	{% endif %}
+	<div class="text-center">
+		<a class="btn btn-primary" href="{% url 'myblog:addpost' %}">Create a New Post</a>
+	</div>
 
 {% endblock %}
