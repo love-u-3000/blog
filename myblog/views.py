@@ -16,7 +16,7 @@ def index(request):
 		posts = Post.objects.all().order_by('-published_date')[:10]
 	else:
 		posts = None
-	if previousRequest == "editpost":
+	if previousRequest == "bug":
 		context_dict = {'posts': posts, 'prompt': True}
 	else:
 		context_dict = {'posts': posts, 'prompt': False}
@@ -96,8 +96,10 @@ def editpost(request, pk):
 	post = get_object_or_404(Post, pk = pk)
 	global previousRequest
 	if post.author != request.user:
-		previousRequest = "editpost"
+		previousRequest = "bug"
 		return HttpResponseRedirect(reverse('myblog:index'))
+	else:
+		previousRequest = "editpost"
 	if request.method == 'POST':
 		post_form = PostForm(request.POST, instance = post)
 		if post_form.is_valid():
@@ -115,11 +117,26 @@ def editpost(request, pk):
 		return render(request, 'myblog/editpost.html', context_dict)
 
 def myPosts(request):
+	global previousRequest
+	previousRequest = "myPosts"
 	myposts = Post.objects.filter(author = request.user).order_by('-published_date')
 	context_dict = {'myposts': myposts}
 	return render(request, 'myblog/myposts.html', context_dict)
 
 def allPosts(request):
+	global previousRequest
+	previousRequest = "allPosts"
 	allposts = Post.objects.all().order_by('-published_date')
 	context_dict = {'allposts': allposts}
 	return render(request, 'myblog/allposts.html', context_dict)
+
+def deletePost(request, pk):
+	post = get_object_or_404(Post, pk = pk)
+	global previousRequest
+	if post.author != request.user:
+		previousRequest = "bug"
+		return HttpResponseRedirect(reverse('myblog:index'))
+	else:
+		previousRequest = "deletePost"
+	post.delete()
+	return HttpResponseRedirect(reverse('myblog:index'))
